@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Meow Mate"
 include(":app")
+include(":domain")
+include(":data")
