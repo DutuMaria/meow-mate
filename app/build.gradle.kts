@@ -10,6 +10,11 @@ android {
     namespace = "com.example.meowmate"
     compileSdk = 36
 
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "com.example.meowmate"
         minSdk = 24
@@ -18,6 +23,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "CAT_API_KEY",
+            "\"${project.findProperty("CAT_API_KEY") ?: ""}\""
+        )
     }
 
     buildTypes {
@@ -29,16 +40,16 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
+
     packaging {
         resources {
             excludes += "META-INF/versions/**"
@@ -76,6 +87,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+    kapt(libs.javapoet)
 
     // Tests
     testImplementation(libs.junit)
@@ -91,3 +103,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
+
+kapt { correctErrorTypes = true }
