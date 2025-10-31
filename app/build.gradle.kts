@@ -89,6 +89,15 @@ dependencies {
     kapt(libs.hilt.compiler)
     kapt(libs.javapoet)
 
+    // Retrofit + Moshi + OkHttp
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.okhttp.logging)
+
+    // Room
+    implementation(libs.room.runtime)
+
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
