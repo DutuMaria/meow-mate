@@ -20,6 +20,7 @@ moshi = "1.15.2"
 okhttpLogging = "5.2.1"
 room = "2.8.3"
 hilt = "2.53.1"
+hiltNavCompose = "1.2.0"
 mockk = "1.14.6"
 turbine = "1.2.1"
 javaxInject = "1"
@@ -27,6 +28,7 @@ javapoet = "1.13.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavCompose"  }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

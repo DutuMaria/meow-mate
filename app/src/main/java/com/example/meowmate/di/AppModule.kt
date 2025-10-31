@@ -7,6 +7,8 @@ import com.example.meowmate.data.CatsRepositoryImpl
 import com.example.meowmate.data.local.CatsDb
 import com.example.meowmate.data.remote.TheCatApi
 import com.example.meowmate.domain.repository.CatsRepository
+import com.example.meowmate.domain.usecase.GetCatByIdUseCase
+import com.example.meowmate.domain.usecase.GetCatsUseCase
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -63,4 +65,10 @@ object AppModule {
         db: CatsDb,
         apiKey: () -> String?
     ): CatsRepository = CatsRepositoryImpl(api, db.dao(), apiKey)
+
+    @Provides @Singleton
+    fun provideGetCatsUseCase(repo: CatsRepository) = GetCatsUseCase(repo)
+
+    @Provides @Singleton
+    fun provideGetCatByIdUseCase(repo: CatsRepository) = GetCatByIdUseCase(repo)
 }
