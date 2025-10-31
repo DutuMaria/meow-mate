@@ -30,6 +30,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
 }
 
@@ -47,6 +48,10 @@ dependencies {
     implementation(libs.room.ktx)
     kapt(libs.room.compiler)
 
+    kapt(libs.javapoet)
+
+    // DI annotations
+    implementation(libs.javax.inject)
 
     // Tests
     testImplementation(libs.junit)
