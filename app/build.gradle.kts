@@ -89,6 +89,9 @@ dependencies {
     kapt(libs.hilt.compiler)
     kapt(libs.javapoet)
 
+    // Navigation Compose
+    implementation(libs.androidx.hilt.navigation.compose)
+
     // Retrofit + Moshi + OkHttp
     implementation(libs.retrofit)
     implementation(libs.retrofit.moshi)
