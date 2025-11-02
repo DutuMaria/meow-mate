@@ -12,9 +12,8 @@ interface TheCatApi {
         @Header("x-api-key") apiKey: String? = null,
         @Query("limit") limit: Int = 20,
         @Query("has_breeds") hasBreeds: Int = 1,
-        @Query("include_breeds") includeBreeds: Int = 1,
         @Query("page") page: Int? = null,
-        @Query("order") order: String? = null
+        @Query("order") order: String? = null,
     ): List<CatImageDto>
 
     @GET("v1/images/{id}")

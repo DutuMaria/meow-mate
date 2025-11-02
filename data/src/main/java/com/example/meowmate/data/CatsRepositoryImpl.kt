@@ -2,7 +2,9 @@ package com.example.meowmate.data
 
 
 import com.example.meowmate.data.local.CatsDao
+import com.example.meowmate.data.remote.CatImageDto
 import com.example.meowmate.data.remote.TheCatApi
+import com.example.meowmate.domain.model.Breed
 import com.example.meowmate.domain.model.CatItem
 import com.example.meowmate.domain.repository.CatsRepository
 import kotlinx.coroutines.flow.Flow
@@ -15,24 +17,36 @@ class CatsRepositoryImpl @Inject constructor(
     private val apiKeyProvider: () -> String? = { null }
 ) : CatsRepository {
 
-    override fun getCats(forceRefresh: Boolean, query: String?): Flow<Result<List<CatItem>>> = flow {
-        emit(Result.success(dao.getAll().map { it.toDomain() }.filterQuery(query)))
-        try {
-            if (forceRefresh || dao.getAll().isEmpty()) {
-                val remote = api.getImages(apiKeyProvider(), limit = 40)
-                val entities = remote.map { it.toEntity() }
-                dao.clear()
-                dao.upsertAll(entities)
+    override fun getCats(forceRefresh: Boolean, query: String?): Flow<Result<List<CatItem>>> =
+        flow {
+            try {
+                val list = api.getImages(apiKey = apiKeyProvider(), limit = 20)
+                emit(Result.success(list.map { it.toDomainModel() }))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
             }
-            val cached = dao.getAll().map { it.toDomain() }.filterQuery(query)
-            if (cached.isEmpty()) emit(Result.failure(IllegalStateException("No cats found")))
-            else emit(Result.success(cached))
-        } catch (e: Exception) {
-            val cached = dao.getAll().map { it.toDomain() }.filterQuery(query)
-            if (cached.isNotEmpty()) emit(Result.success(cached))
-            emit(Result.failure(e))
         }
-    }
+
+    private fun CatImageDto.toDomainModel(): CatItem = CatItem(
+        imageId = id,
+        imageUrl = url,
+        breed = breeds?.firstOrNull()?.let { dto ->
+            Breed(
+                id = dto.id,
+                name = dto.name,
+                origin = dto.origin ?: "",
+                temperament = dto.temperament ?: "",
+                lifeSpan = dto.lifeSpan ?: "",
+                intelligence = dto.intelligence ?: 0,
+                affectionLevel = dto.affectionLevel ?: 0,
+                childFriendly = dto.childFriendly ?: 0,
+                socialNeeds = dto.socialNeeds ?: 0,
+                wikipediaUrl = dto.wikipediaUrl ?: "",
+                vetstreetUrl = dto.vetstreetUrl ?: "",
+                description = dto.description ?: ""
+            )
+        }
+    )
 
     override suspend fun getCatByImageId(id: String): Result<CatItem> = try {
         dao.getById(id)?.toDomain()?.let { Result.success(it) }
@@ -41,7 +55,9 @@ class CatsRepositoryImpl @Inject constructor(
                 val entity = remote.toEntity().also { dao.upsertAll(listOf(it)) }
                 Result.success(entity.toDomain())
             }
-    } catch (e: Exception) { Result.failure(e) }
+    } catch (e: Exception) {
+        Result.failure(e)
+    }
 }
 
 private fun List<CatItem>.filterQuery(q: String?): List<CatItem> {
