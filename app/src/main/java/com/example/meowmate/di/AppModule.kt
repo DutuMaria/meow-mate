@@ -20,21 +20,37 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideOkHttp(): OkHttpClient =
         OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC })
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            })
+            .addNetworkInterceptor { chain ->
+                val req = chain.request()
+                android.util.Log.i(
+                    "MeowMate",
+                    "REQ ${req.method} ${req.url} \nHeaders:\n${req.headers}"
+                )
+                chain.proceed(req)
+            }
             .build()
 
-    @Provides @Singleton
-    fun provideMoshi(): Moshi = Moshi.Builder().build()
+    @Provides
+    @Singleton
+    fun provideMoshi(): Moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideRetrofit(client: OkHttpClient, moshi: Moshi): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://api.thecatapi.com/")
@@ -42,11 +58,13 @@ object AppModule {
             .client(client)
             .build()
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideCatApi(retrofit: Retrofit): TheCatApi =
         retrofit.create(TheCatApi::class.java)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideDb(@ApplicationContext ctx: Context): CatsDb =
         Room.databaseBuilder(ctx, CatsDb::class.java, "cats.db")
             .fallbackToDestructiveMigration(false)
@@ -56,19 +74,27 @@ object AppModule {
     fun provideDao(db: CatsDb) = db.dao()
 
     // API key din BuildConfig
-    @Provides @Singleton
-    fun provideApiKey(): () -> String? = { BuildConfig.CAT_API_KEY }
+    @Provides
+    @Singleton
+    fun provideApiKey(): () -> String? = {
+        val key = BuildConfig.CAT_API_KEY
+        android.util.Log.i("MeowMate", "CAT_API_KEY len=${key.length}, starts=${key.take(4)}****")
+        key
+    }
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideRepository(
         api: TheCatApi,
         db: CatsDb,
         apiKey: () -> String?
     ): CatsRepository = CatsRepositoryImpl(api, db.dao(), apiKey)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideGetCatsUseCase(repo: CatsRepository) = GetCatsUseCase(repo)
 
-    @Provides @Singleton
+    @Provides
+    @Singleton
     fun provideGetCatByIdUseCase(repo: CatsRepository) = GetCatByIdUseCase(repo)
 }

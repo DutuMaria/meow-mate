@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MeowMate</string>
+
+    <string name="search_placeholder">Caută (nume, origine, temperament)...</string>
+    <string name="empty_title">N-am găsit pisici 😿</string>
+    <string name="retry">Reîncearcă</string>
+    <string name="error_prefix">A apărut o eroare: %1$s</string>
+
+
+    <string name="language">Limbă</string>
+    <string name="lang_en">Engleză</string>
+    <string name="lang_ro">Română</string>
+</resources>

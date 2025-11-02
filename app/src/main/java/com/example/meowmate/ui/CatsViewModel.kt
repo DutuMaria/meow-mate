@@ -1,5 +1,6 @@
 package com.example.meowmate.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.meowmate.domain.usecase.GetCatsUseCase
@@ -21,14 +22,19 @@ class CatsViewModel @Inject constructor(
     private val _state = MutableStateFlow(CatsUiState(isLoading = true))
     val state: StateFlow<CatsUiState> = _state.asStateFlow()
 
-    init { refresh(force = false) }
+    init {
+        refresh(force = false)
+    }
 
     fun refresh(force: Boolean) {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoading = true, error = null)
             getCats(force, query = _state.value.query)
-                .catch { e -> _state.value = _state.value.copy(isLoading = false, error = e.message) }
+                .catch { e ->
+                    _state.value = _state.value.copy(isLoading = false, error = e.message)
+                }
                 .collectLatest { result ->
+                    Log.i("MeowMate", "Cats fetched: $result")
                     _state.value = _state.value.copy(
                         isLoading = false,
                         items = result.getOrElse { emptyList() },

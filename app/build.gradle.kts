@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -24,10 +26,18 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
+        val localProps = Properties().apply {
+            val f = rootProject.file("local.properties")
+            if (f.exists()) {
+                f.inputStream().use { load(it) }
+            }
+        }
+        val catApiKey = (localProps.getProperty("CAT_API_KEY") ?: "").toString()
+
         buildConfigField(
             "String",
             "CAT_API_KEY",
-            "\"${project.findProperty("CAT_API_KEY") ?: ""}\""
+            "\"$catApiKey\""
         )
     }
 
@@ -69,13 +79,16 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
 
     // Navigation + Coil (imagini)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.coil.compose)
 
     // Pull-to-refresh
-    implementation(libs.accompanist.swiperefresh)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.material3)
 
     // Lifecycle & ViewModel Compose
     implementation(libs.androidx.lifecycle.runtime.ktx)

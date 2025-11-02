@@ -2,13 +2,10 @@ package com.example.meowmate.navigation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.meowmate.ui.CatDetailViewModel
-import com.example.meowmate.ui.CatsViewModel
+import com.example.meowmate.ui.CatsListScreen
 
 object Routes {
     const val LIST = "list"
@@ -19,11 +16,11 @@ object Routes {
 fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Routes.LIST) {
         composable(Routes.LIST) {
-            val vm: CatsViewModel = hiltViewModel()
-            Text("List screen placeholder; items: ${vm.state.collectAsState().value.items.size}")
+            CatsListScreen(
+                onOpenDetails = { id -> navController.navigate("detail/$id") }
+            )
         }
-        composable(Routes.DETAIL) { backStackEntry ->
-            val vm: CatDetailViewModel = hiltViewModel()
+        composable(Routes.DETAIL) {
             Text(text = "Detail screen placeholder")
         }
     }
