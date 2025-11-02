@@ -51,7 +51,7 @@ fun CatItemCard(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .align(Alignment.Start)
+                    .align(Alignment.CenterHorizontally)
             )
         }
     }

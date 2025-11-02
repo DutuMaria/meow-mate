@@ -1,6 +1,7 @@
 package com.example.meowmate.ui
 
 import android.util.Log
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,7 +18,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,12 +32,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.meowmate.R
 import com.example.meowmate.i18n.Locales
 import com.example.meowmate.ui.components.CatItemCard
+import com.example.meowmate.ui.components.CatSearchBar
 import com.example.meowmate.ui.state.CatsUiState
 
 
@@ -48,8 +51,14 @@ fun CatsListScreen(
     vm: CatsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
+    val focusManager = LocalFocusManager.current
 
     Scaffold(
+        modifier = Modifier.pointerInput(Unit) {
+            detectTapGestures(onTap = {
+                focusManager.clearFocus()
+            })
+        },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.app_name)) },
@@ -78,18 +87,12 @@ fun CatsListScreen(
                 .fillMaxSize()
         ) {
             // Search
-            var localQuery by remember(state.query) { mutableStateOf(state.query) }
-            OutlinedTextField(
-                value = localQuery,
-                onValueChange = {
-                    localQuery = it
-                    vm.updateQuery(it)
-                },
+            CatSearchBar(
+                query = state.query,
+                onQueryChange = { vm.updateQuery(it) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                singleLine = true,
-                placeholder = { Text(stringResource(R.string.search_placeholder)) }
+                    .padding(horizontal = 16.dp, vertical = 10.dp)
             )
 
             // Swipe to refresh + Grid
