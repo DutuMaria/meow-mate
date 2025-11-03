@@ -67,7 +67,7 @@ It features search and filtering, pull-to-refresh, detailed breed information (i
 - 🌙 **Dark/Light theme toggle** with persistent state
 - 🚧 **Error handling** for network and API issues  
 
-## Future update
+## Future updates
 - Fix images
 - Add logging system
-- 
+- Loading animation
