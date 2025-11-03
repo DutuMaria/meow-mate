@@ -1,22 +1,48 @@
 <resources>
+    <!-- App -->
     <string name="app_name">MeowMate</string>
-    <string name="search">Search icon</string>
-    <string name="clear_search">Clear search</string>
+
+    <!-- Top bar/Actions -->
+    <string name="cd_open_settings">Deschide setări</string>
+
+    <!-- Search -->
     <string name="search_placeholder">Caută nume/origine/temperament</string>
-    <string name="empty_title">N-am găsit pisici 😿</string>
+    <string name="search">Caută</string>
+    <string name="clear_search">Șterge căutarea</string>
+
+    <!-- Detail labels -->
+    <string name="origin">Origine</string>
+    <string name="temperament">Temperament</string>
+    <string name="life_span">Durată de viață</string>
+    <string name="intelligence">Inteligență</string>
+    <string name="affection_level">Afectivitate</string>
+    <string name="child_friendly">Prietenos cu copiii</string>
+    <string name="social_needs">Nevoi sociale</string>
+    <string name="description">Descriere</string>
+
+    <!-- Links -->
+    <string name="open_wiki">Deschide Wikipedia</string>
+    <string name="open_vetstreet">Deschide Vetstreet</string>
+
+    <!-- States/Errors -->
     <string name="retry">Reîncearcă</string>
     <string name="error_prefix">A apărut o eroare: %1$s</string>
-    <string name="origin">Origin</string>
-    <string name="temperament">Temperament</string>
-    <string name="life_span">Life span</string>
-    <string name="intelligence">Intelligence</string>
-    <string name="affection_level">Affection</string>
-    <string name="child_friendly">Child friendly</string>
-    <string name="social_needs">Social needs</string>
-    <string name="description">Description</string>
-    <string name="open_wiki">Open Wikipedia</string>
-    <string name="open_vetstreet">Open Vetstreet</string>
+    <string name="empty_title">Nicio pisică disponibilă.</string>
+    <string name="empty_list">Nu am găsit pisici.</string>
+    <string name="offline_fallback">Ești offline. Afișăm datele din cache.</string>
+
+    <!-- Settings -->
+    <string name="settings">Setări</string>
+    <string name="theme">Temă</string>
     <string name="language">Limbă</string>
-    <string name="lang_en">Engleză</string>
-    <string name="lang_ro">Română</string>
+    <string name="light">Luminoasă</string>
+    <string name="dark">Întunecată</string>
+    <string name="system">Sistem</string>
+    <string name="english">Engleză</string>
+    <string name="romanian">Română</string>
+
+    <!-- Content descriptions/accessibility -->
+    <string name="cd_back">Înapoi</string>
+    <string name="cd_cat_image">Imagine pisică</string>
+    <string name="dynamic_color">Culoare dinamică</string>
 </resources>

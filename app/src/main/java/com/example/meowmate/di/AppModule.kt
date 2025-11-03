@@ -6,6 +6,7 @@ import com.example.meowmate.BuildConfig
 import com.example.meowmate.data.CatsRepositoryImpl
 import com.example.meowmate.data.local.CatsDb
 import com.example.meowmate.data.remote.TheCatApi
+import com.example.meowmate.data.settings.SettingsRepository
 import com.example.meowmate.domain.repository.CatsRepository
 import com.example.meowmate.domain.usecase.GetCatByIdUseCase
 import com.example.meowmate.domain.usecase.GetCatsUseCase
@@ -97,4 +98,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGetCatByIdUseCase(repo: CatsRepository) = GetCatByIdUseCase(repo)
+
+    @Provides
+    @Singleton
+    fun provideSettingsRepository(@ApplicationContext ctx: Context): SettingsRepository =
+        SettingsRepository(ctx)
 }

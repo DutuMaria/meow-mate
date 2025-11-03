@@ -13,20 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,14 +35,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.meowmate.R
 import com.example.meowmate.domain.model.CatItem
+import com.example.meowmate.ui.components.BackAppBar
 import com.example.meowmate.ui.components.StarRating
+import com.example.meowmate.ui.theme.MintSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,18 +57,9 @@ fun CatDetailsScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        ui.item?.breed?.name ?: stringResource(R.string.app_name),
-                        maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                }
+            BackAppBar(
+                title = ui.item?.breed?.name ?: stringResource(R.string.app_name),
+                onBack = onBack
             )
         }
     ) { padding ->
@@ -207,13 +195,19 @@ private fun DetailsContent(cat: CatItem, modifier: Modifier = Modifier) {
             if (!breed?.wikipediaUrl.isNullOrBlank()) {
                 AssistChip(
                     onClick = { uri.openUri(breed.wikipediaUrl!!) },
-                    label = { Text(stringResource(R.string.open_wiki)) }
+                    label = { Text(stringResource(R.string.open_wiki)) },
+                    colors = AssistChipDefaults.assistChipColors(
+                        containerColor = MintSecondary
+                    )
                 )
             }
             if (!breed?.vetstreetUrl.isNullOrBlank()) {
                 AssistChip(
                     onClick = { uri.openUri(breed.vetstreetUrl!!) },
-                    label = { Text(stringResource(R.string.open_vetstreet)) }
+                    label = { Text(stringResource(R.string.open_vetstreet)) },
+                    colors = AssistChipDefaults.assistChipColors(
+                        containerColor = MintSecondary
+                    )
                 )
             }
         }
