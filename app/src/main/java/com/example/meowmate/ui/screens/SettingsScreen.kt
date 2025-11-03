@@ -1,4 +1,4 @@
-package com.example.meowmate.ui.settings
+package com.example.meowmate.ui.screens
 
 import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.meowmate.R
 import com.example.meowmate.ui.components.BackAppBar
+import com.example.meowmate.ui.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

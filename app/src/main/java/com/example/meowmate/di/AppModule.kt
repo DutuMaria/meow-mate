@@ -3,7 +3,7 @@ package com.example.meowmate.di
 import android.content.Context
 import androidx.room.Room
 import com.example.meowmate.BuildConfig
-import com.example.meowmate.data.CatsRepositoryImpl
+import com.example.meowmate.data.repository.CatsRepositoryImpl
 import com.example.meowmate.data.local.CatsDb
 import com.example.meowmate.data.remote.TheCatApi
 import com.example.meowmate.data.settings.SettingsRepository

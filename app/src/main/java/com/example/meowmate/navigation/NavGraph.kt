@@ -6,9 +6,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.meowmate.ui.CatDetailsScreen
-import com.example.meowmate.ui.CatsListScreen
-import com.example.meowmate.ui.settings.SettingsScreen
+import com.example.meowmate.ui.screens.CatDetailsScreen
+import com.example.meowmate.ui.screens.CatsListScreen
+import com.example.meowmate.ui.screens.SettingsScreen
 
 object Routes {
     const val LIST = "list"

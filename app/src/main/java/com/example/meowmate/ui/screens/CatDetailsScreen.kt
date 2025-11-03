@@ -1,4 +1,4 @@
-package com.example.meowmate.ui
+package com.example.meowmate.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -41,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.meowmate.R
 import com.example.meowmate.domain.model.CatItem
+import com.example.meowmate.ui.viewmodel.CatDetailsViewModel
 import com.example.meowmate.ui.components.BackAppBar
 import com.example.meowmate.ui.components.StarRating
 import com.example.meowmate.ui.theme.MintSecondary

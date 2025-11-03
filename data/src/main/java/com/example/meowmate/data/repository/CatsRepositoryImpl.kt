@@ -1,9 +1,11 @@
-package com.example.meowmate.data
+package com.example.meowmate.data.repository
 
 
 import com.example.meowmate.data.local.CatsDao
-import com.example.meowmate.data.remote.CatImageDto
+import com.example.meowmate.data.remote.dto.CatImageDto
 import com.example.meowmate.data.remote.TheCatApi
+import com.example.meowmate.data.remote.dto.toDomain
+import com.example.meowmate.data.remote.dto.toEntity
 import com.example.meowmate.domain.model.Breed
 import com.example.meowmate.domain.model.CatItem
 import com.example.meowmate.domain.repository.CatsRepository

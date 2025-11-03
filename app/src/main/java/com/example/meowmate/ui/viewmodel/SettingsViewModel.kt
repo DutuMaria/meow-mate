@@ -1,4 +1,4 @@
-package com.example.meowmate.ui.settings
+package com.example.meowmate.ui.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -35,10 +35,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     val isDark: StateFlow<Boolean> =
-        repo.isDarkTheme.stateIn(viewModelScope, SharingStarted.Lazily, false)
+        repo.isDarkTheme.stateIn(viewModelScope, SharingStarted.Companion.Lazily, false)
 
     val dynamic: StateFlow<Boolean> =
-        repo.useDynamicColor.stateIn(viewModelScope, SharingStarted.Lazily, false)
+        repo.useDynamicColor.stateIn(viewModelScope, SharingStarted.Companion.Lazily, false)
 
     fun toggleDark(on: Boolean) {
         repo.setDarkTheme(on)

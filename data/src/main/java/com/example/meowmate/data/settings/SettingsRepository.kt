@@ -1,19 +1,14 @@
 package com.example.meowmate.data.settings
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import androidx.core.content.edit
+import javax.inject.Inject
 
-@Singleton
 class SettingsRepository @Inject constructor(
-    @ApplicationContext context: Context
+ private val context: Context
 ) {
-    private val prefs = context.getSharedPreferences(PREFS, MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
     private val _locale = MutableStateFlow(prefs.getString(KEY_LOCALE, "en") ?: "en")
     val localeTag: StateFlow<String> = _locale
@@ -26,19 +21,19 @@ class SettingsRepository @Inject constructor(
 
     fun setLocale(tag: String) {
         if (tag == _locale.value) return
-        prefs.edit { putString(KEY_LOCALE, tag) }
+        prefs.edit().putString(KEY_LOCALE, tag).apply()
         _locale.value = tag
     }
 
     fun setDarkTheme(enabled: Boolean) {
         if (enabled == _isDark.value) return
-        prefs.edit { putBoolean(KEY_DARK, enabled) }
+        prefs.edit().putBoolean(KEY_DARK, enabled).apply()
         _isDark.value = enabled
     }
 
     fun setDynamicColor(enabled: Boolean) {
         if (enabled == _dynamic.value) return
-        prefs.edit { putBoolean(KEY_DYNAMIC, enabled) }
+        prefs.edit().putBoolean(KEY_DYNAMIC, enabled).apply()
         _dynamic.value = enabled
     }
 

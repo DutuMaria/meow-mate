@@ -1,4 +1,4 @@
-package com.example.meowmate.ui
+package com.example.meowmate.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.meowmate.R
+import com.example.meowmate.ui.viewmodel.CatsViewModel
 import com.example.meowmate.ui.components.CatItemCard
 import com.example.meowmate.ui.components.CatSearchBar
 import com.example.meowmate.ui.components.MeowMateAppBar
