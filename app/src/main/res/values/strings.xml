@@ -6,6 +6,16 @@
     <string name="empty_title">No cats found 😿</string>
     <string name="retry">Retry</string>
     <string name="error_prefix">An error occurred: %1$s</string>
+    <string name="origin">Origin</string>
+    <string name="temperament">Temperament</string>
+    <string name="life_span">Life span</string>
+    <string name="intelligence">Intelligence</string>
+    <string name="affection_level">Affection</string>
+    <string name="child_friendly">Child friendly</string>
+    <string name="social_needs">Social needs</string>
+    <string name="description">Description</string>
+    <string name="open_wiki">Open Wikipedia</string>
+    <string name="open_vetstreet">Open Vetstreet</string>
     <string name="language">Language</string>
     <string name="lang_en">English</string>
     <string name="lang_ro">Română</string>

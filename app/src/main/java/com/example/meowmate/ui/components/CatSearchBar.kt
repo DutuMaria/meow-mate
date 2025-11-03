@@ -37,7 +37,7 @@ fun CatSearchBar(
             value = query,
             onValueChange = onQueryChange,
             singleLine = true,
-            placeholder = { Text(stringResource(R.string.search_placeholder), fontSize = 15.5.sp) },
+            placeholder = { Text(stringResource(R.string.search_placeholder), fontSize = 14.5.sp) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Filled.Search,
