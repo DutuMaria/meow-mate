@@ -1,4 +1,4 @@
-package com.example.meowmate.ui
+package com.example.meowmate.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -15,21 +15,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -38,9 +31,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.meowmate.R
-import com.example.meowmate.i18n.Locales
+import com.example.meowmate.ui.viewmodel.CatsViewModel
 import com.example.meowmate.ui.components.CatItemCard
 import com.example.meowmate.ui.components.CatSearchBar
+import com.example.meowmate.ui.components.MeowMateAppBar
 import com.example.meowmate.ui.state.CatsUiState
 
 
@@ -48,6 +42,7 @@ import com.example.meowmate.ui.state.CatsUiState
 @Composable
 fun CatsListScreen(
     onOpenDetails: (imageId: String) -> Unit,
+    onOpenSettings: () -> Unit,
     vm: CatsViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
@@ -60,25 +55,7 @@ fun CatsListScreen(
             })
         },
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.app_name)) },
-                actions = {
-                    var expanded by remember { mutableStateOf(false) }
-                    TextButton(onClick = { expanded = true }) {
-                        Text("🌐 ")
-                    }
-                    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.lang_en)) },
-                            onClick = { expanded = false; Locales.set("en") }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.lang_ro)) },
-                            onClick = { expanded = false; Locales.set("ro") }
-                        )
-                    }
-                }
-            )
+            MeowMateAppBar(onOpenSettings)
         }
     ) { padding ->
         Column(

@@ -1,4 +1,4 @@
-package com.example.meowmate.data.remote
+package com.example.meowmate.data.remote.dto
 
 data class CatImageDto(
     val id: String,

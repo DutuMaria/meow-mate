@@ -1,4 +1,4 @@
-package com.example.meowmate.ui
+package com.example.meowmate.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

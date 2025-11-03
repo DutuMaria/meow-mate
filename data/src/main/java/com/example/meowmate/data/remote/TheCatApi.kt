@@ -1,6 +1,7 @@
 package com.example.meowmate.data.remote
 
 
+import com.example.meowmate.data.remote.dto.CatImageDto
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path

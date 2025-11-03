@@ -1,8 +1,6 @@
-package com.example.meowmate.data
+package com.example.meowmate.data.remote.dto
 
 import com.example.meowmate.data.local.CatImageEntity
-import com.example.meowmate.data.remote.BreedDto
-import com.example.meowmate.data.remote.CatImageDto
 import com.example.meowmate.domain.model.Breed
 import com.example.meowmate.domain.model.CatItem
 

@@ -1,5 +1,4 @@
-package com.example.meowmate.data.remote
-
+package com.example.meowmate.data.remote.dto
 
 import com.squareup.moshi.Json
 
