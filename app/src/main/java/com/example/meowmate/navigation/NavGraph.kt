@@ -1,10 +1,12 @@
 package com.example.meowmate.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.meowmate.ui.CatDetailsScreen
 import com.example.meowmate.ui.CatsListScreen
 
 object Routes {
@@ -20,8 +22,12 @@ fun AppNavHost(navController: NavHostController) {
                 onOpenDetails = { id -> navController.navigate("detail/$id") }
             )
         }
-        composable(Routes.DETAIL) {
-            Text(text = "Detail screen placeholder")
+        composable(
+            route = Routes.DETAIL,
+            arguments = listOf(navArgument("imageId") { type = NavType.StringType })
+        ) { backStack ->
+            val imageId = backStack.arguments?.getString("imageId")!!
+            CatDetailsScreen(imageId = imageId, onBack = { navController.popBackStack() })
         }
     }
 }

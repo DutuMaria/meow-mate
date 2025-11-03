@@ -65,7 +65,7 @@ fun CatsListScreen(
                 actions = {
                     var expanded by remember { mutableStateOf(false) }
                     TextButton(onClick = { expanded = true }) {
-                        Text("🌐 " + stringResource(R.string.language))
+                        Text("🌐 ")
                     }
                     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                         DropdownMenuItem(
@@ -86,16 +86,14 @@ fun CatsListScreen(
                 .padding(padding)
                 .fillMaxSize()
         ) {
-            // Search
             CatSearchBar(
                 query = state.query,
                 onQueryChange = { vm.updateQuery(it) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 10.dp)
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
             )
 
-            // Swipe to refresh + Grid
             val pullToRefreshState = rememberPullToRefreshState()
 
             PullToRefreshBox(
@@ -128,7 +126,6 @@ private fun CatsGrid(
             modifier = Modifier.fillMaxSize()
         ) {
             items(state.items, key = { it.imageId }) { cat ->
-//                Log.i("MeowMate", "URL IMAGINE: ${cat.imageUrl}")
                 CatItemCard(
                     imageUrl = cat.imageUrl,
                     name = cat.breed?.name,

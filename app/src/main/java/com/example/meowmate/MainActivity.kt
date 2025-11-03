@@ -17,8 +17,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MeowMateTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                }
                 Surface {
                     val navController = rememberNavController()
                     AppNavHost(navController)
