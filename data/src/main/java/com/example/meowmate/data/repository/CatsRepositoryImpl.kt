@@ -2,7 +2,7 @@ package com.example.meowmate.data.repository
 
 
 import com.example.meowmate.data.local.CatsDao
-import com.example.meowmate.data.remote.dto.CatImageDto
+import com.example.meowmate.data.remote.dto.CatDto
 import com.example.meowmate.data.remote.TheCatApi
 import com.example.meowmate.data.remote.dto.toDomain
 import com.example.meowmate.data.remote.dto.toEntity
@@ -29,7 +29,7 @@ class CatsRepositoryImpl @Inject constructor(
             }
         }
 
-    private fun CatImageDto.toDomainModel(): CatItem = CatItem(
+    private fun CatDto.toDomainModel(): CatItem = CatItem(
         imageId = id,
         imageUrl = url,
         breed = breeds?.firstOrNull()?.let { dto ->

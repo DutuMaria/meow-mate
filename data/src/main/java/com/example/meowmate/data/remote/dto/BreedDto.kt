@@ -3,7 +3,7 @@ package com.example.meowmate.data.remote.dto
 import com.squareup.moshi.Json
 
 data class BreedDto(
-    val id: String,
+    val id: String? = null,
     val name: String,
     val origin: String?,
     val temperament: String?,
