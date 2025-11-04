@@ -55,6 +55,9 @@ dependencies {
 
     // Tests
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test.v181)
+    testImplementation(libs.mockwebserver)
+    testImplementation(kotlin("test"))
 }
 
 kapt {

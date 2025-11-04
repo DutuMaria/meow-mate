@@ -1,7 +1,7 @@
 package com.example.meowmate.data.remote
 
 
-import com.example.meowmate.data.remote.dto.CatImageDto
+import com.example.meowmate.data.remote.dto.CatDto
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
@@ -15,11 +15,11 @@ interface TheCatApi {
         @Query("has_breeds") hasBreeds: Int = 1,
         @Query("page") page: Int? = null,
         @Query("order") order: String? = null,
-    ): List<CatImageDto>
+    ): List<CatDto>
 
     @GET("v1/images/{id}")
     suspend fun getImageById(
         @Header("x-api-key") apiKey: String? = null,
         @Path("id") id: String
-    ): CatImageDto
+    ): CatDto
 }

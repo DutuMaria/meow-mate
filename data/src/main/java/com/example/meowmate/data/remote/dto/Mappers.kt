@@ -10,7 +10,7 @@ internal fun BreedDto.toDomain() = Breed(
     wikipediaUrl, vetstreetUrl, description
 )
 
-internal fun CatImageDto.toEntity(): CatImageEntity {
+internal fun CatDto.toEntity(): CatImageEntity {
     val b = breeds?.firstOrNull()
     return CatImageEntity(
         id = id,
