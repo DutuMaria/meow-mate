@@ -3,6 +3,12 @@
 
 ---
 
+![MeowMate](app/src/main/res/drawable/app_2.png)
+
+![MeowMate](app/src/main/res/drawable/app_3.png)
+
+---
+
 ## ✨ Overview
 **MeowMate** is a modern Android application built with **Kotlin** that lets users explore adorable cats from **TheCatAPI**.  
 It features search and filtering, pull-to-refresh, detailed breed information (image, temperament, ratings, description, and external links), offline caching, dynamic language switching (EN/RO/IT), and a Dark/Light theme toggle — all implemented following a modular **Clean Architecture** and **MVVM** pattern.
@@ -16,7 +22,7 @@ It features search and filtering, pull-to-refresh, detailed breed information (i
 - [x] 🧠 MVVM pattern (ViewModel, Repository, UseCases)
 - [x] 💉 Dependency Injection with Hilt
 - [x] 🌐 Retrofit + Moshi + OkHttp (with logging interceptor)
-- [x] 💾 Room Database (cache + offline support)
+- [] 💾 Room Database (cache + offline support) - WIP on branch feature/step9-caching-and-offline-mode
 - [x] 🧭 Navigation Compose (list → detail)
 - [x] 🧰 BuildConfig API key loaded from `local.properties`
 
@@ -36,7 +42,7 @@ It features search and filtering, pull-to-refresh, detailed breed information (i
 ### 🌍 Accessibility & UX Enhancements
 - [x] Runtime language switch (EN/RO)
 - [x] Dynamic Dark/Light Theme toggle
-- [x] Offline cache fallback (Room)
+- [] Offline cache fallback (Room) - WIP on branch feature/step9-caching-and-offline-mode
 - [x] Error handling (no internet/bad API response)
 - [x] Full internationalization via `strings.xml`
 
@@ -58,7 +64,14 @@ It features search and filtering, pull-to-refresh, detailed breed information (i
 - 📖 **Detail screen** with large image, breed info, ratings & description
 - ⭐ **5-star rating display** (intelligence, affection, child-friendliness, social needs)
 - 🌐 **Clickable chips** linking to Wikipedia & Vetstreet pages
-- 💾 **Offline caching** with Room database
+- 💾 **Offline caching** with Room database - WIP on branch feature/step9-caching-and-offline-mode
 - 🌍 **Dynamic language switching** (EN/RO)
 - 🌙 **Dark/Light theme toggle** with persistent state
-- 🚧 **Error handling** for network and API issues  
+- 🚧 **Error handling** for network and API issues - WIP on branch feature/step9-caching-and-offline-mode
+
+## Future updates
+- WIP Caching and error handling on branch feature/step9-caching-and-offline-mode
+- Verify star rating functionality 
+- Fix images
+- Add logging system
+- Add loading animation
