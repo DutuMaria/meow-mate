@@ -11,7 +11,7 @@
 
 ## ✨ Overview
 **MeowMate** is a modern Android application built with **Kotlin** that lets users explore adorable cats from **TheCatAPI**.  
-It features search and filtering, pull-to-refresh, detailed breed information (image, temperament, ratings, description, and external links), offline caching, dynamic language switching (EN/RO/IT), and a Dark/Light theme toggle — all implemented following a modular **Clean Architecture** and **MVVM** pattern.
+It features search and filtering, pull-to-refresh, detailed breed information (image, temperament, ratings, description, and external links), offline caching, dynamic language switching (EN/RO), and a Dark/Light theme toggle — all implemented following a modular **Clean Architecture** and **MVVM** pattern.
 
 ---
 
