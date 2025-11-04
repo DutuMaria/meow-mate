@@ -1,6 +1,6 @@
 package com.example.meowmate.data.remote.dto
 
-import com.example.meowmate.data.local.CatImageEntity
+import com.example.meowmate.data.local.CatEntity
 import com.example.meowmate.domain.model.Breed
 import com.example.meowmate.domain.model.CatItem
 
@@ -10,9 +10,9 @@ internal fun BreedDto.toDomain() = Breed(
     wikipediaUrl, vetstreetUrl, description
 )
 
-internal fun CatImageDto.toEntity(): CatImageEntity {
+internal fun CatDto.toEntity(): CatEntity {
     val b = breeds?.firstOrNull()
-    return CatImageEntity(
+    return CatEntity(
         id = id,
         url = url,
         breedId = b?.id,
@@ -30,7 +30,7 @@ internal fun CatImageDto.toEntity(): CatImageEntity {
     )
 }
 
-internal fun CatImageEntity.toDomain() = CatItem(
+internal fun CatEntity.toDomain() = CatItem(
     imageId = id,
     imageUrl = url,
     breed = Breed(

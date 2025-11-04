@@ -32,7 +32,7 @@ android {
                 f.inputStream().use { load(it) }
             }
         }
-        val catApiKey = (localProps.getProperty("CAT_API_KEY") ?: "").toString()
+        val catApiKey = (localProps.getProperty("CAT_API_KEY") ?: "")
 
         buildConfigField(
             "String",
@@ -90,6 +90,7 @@ dependencies {
     // Pull-to-refresh
     implementation(libs.androidx.material)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.accompanist.swiperefresh)
 
     // Lifecycle & ViewModel Compose
     implementation(libs.androidx.lifecycle.runtime.ktx)

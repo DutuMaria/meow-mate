@@ -30,6 +30,9 @@
     <string name="empty_title">No cats available.</string>
     <string name="empty_list">No cats found.</string>
     <string name="offline_fallback">You are offline. Showing cached data.</string>
+    <string name="refresh">Refresh</string>
+    <string name="no_results">No results</string>
+    <string name="network_error">Network error</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>

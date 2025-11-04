@@ -1,35 +1,43 @@
 package com.example.meowmate.data.repository
 
 
+import androidx.room.withTransaction
 import com.example.meowmate.data.local.CatsDao
-import com.example.meowmate.data.remote.dto.CatImageDto
+import com.example.meowmate.data.local.CatsDb
 import com.example.meowmate.data.remote.TheCatApi
+import com.example.meowmate.data.remote.dto.CatDto
 import com.example.meowmate.data.remote.dto.toDomain
 import com.example.meowmate.data.remote.dto.toEntity
 import com.example.meowmate.domain.model.Breed
 import com.example.meowmate.domain.model.CatItem
 import com.example.meowmate.domain.repository.CatsRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CatsRepositoryImpl @Inject constructor(
     private val api: TheCatApi,
     private val dao: CatsDao,
+    private val db: CatsDb,
     private val apiKeyProvider: () -> String? = { null }
 ) : CatsRepository {
 
-    override fun getCats(forceRefresh: Boolean, query: String?): Flow<Result<List<CatItem>>> =
-        flow {
-            try {
-                val list = api.getImages(apiKey = apiKeyProvider(), limit = 20)
-                emit(Result.success(list.map { it.toDomainModel() }))
-            } catch (e: Exception) {
-                emit(Result.failure(e))
-            }
+    override suspend fun getCats(query: String): List<CatItem> = withContext(Dispatchers.IO) {
+        val remote = api.getImages(limit = 20, hasBreeds = 1)
+        val entities = remote.map(CatDto::toEntity)
+        db.withTransaction {
+            dao.insertAll(entities)
         }
+        val rows = if (query.isBlank()) dao.getAll() else dao.search(query)
+        rows.map { it.toDomain() }
+    }
+    override suspend fun cachedCats(query: String): List<CatItem> = withContext(Dispatchers.IO) {
+        val rows = if (query.isBlank()) dao.getAll() else dao.search(query)
+        rows.map { it.toDomain() }
+    }
 
-    private fun CatImageDto.toDomainModel(): CatItem = CatItem(
+
+    private fun CatDto.toDomainModel(): CatItem = CatItem(
         imageId = id,
         imageUrl = url,
         breed = breeds?.firstOrNull()?.let { dto ->
@@ -54,7 +62,7 @@ class CatsRepositoryImpl @Inject constructor(
         dao.getById(id)?.toDomain()?.let { Result.success(it) }
             ?: run {
                 val remote = api.getImageById(apiKeyProvider(), id)
-                val entity = remote.toEntity().also { dao.upsertAll(listOf(it)) }
+                val entity = remote.toEntity().also { dao.insertAll(listOf(it)) }
                 Result.success(entity.toDomain())
             }
     } catch (e: Exception) {

@@ -1,137 +1,83 @@
 package com.example.meowmate.ui.screens
 
-import android.util.Log
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.meowmate.R
-import com.example.meowmate.ui.viewmodel.CatsViewModel
-import com.example.meowmate.ui.components.CatItemCard
-import com.example.meowmate.ui.components.CatSearchBar
-import com.example.meowmate.ui.components.MeowMateAppBar
+import com.example.meowmate.ui.components.*
 import com.example.meowmate.ui.state.CatsUiState
+import com.example.meowmate.ui.viewmodel.CatsViewModel
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CatsListScreen(
-    onOpenDetails: (imageId: String) -> Unit,
+    vm: CatsViewModel = hiltViewModel(),
     onOpenSettings: () -> Unit,
-    vm: CatsViewModel = hiltViewModel()
+    onOpenDetails: (String) -> Unit
 ) {
-    val state by vm.state.collectAsState()
-    val focusManager = LocalFocusManager.current
+    val ui by vm.ui.collectAsState()
+    val query by vm.query.collectAsState()
+    val refreshing = ui is CatsUiState.Loading
 
     Scaffold(
-        modifier = Modifier.pointerInput(Unit) {
-            detectTapGestures(onTap = {
-                focusManager.clearFocus()
-            })
-        },
         topBar = {
             MeowMateAppBar(onOpenSettings)
         }
-    ) { padding ->
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
+    ) { pad ->
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(refreshing),
+            onRefresh = { vm.refresh() },                // apelul tău de reload
+            modifier = Modifier.padding(pad)
         ) {
-            CatSearchBar(
-                query = state.query,
-                onQueryChange = { vm.updateQuery(it) },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp)
-            )
-
-            val pullToRefreshState = rememberPullToRefreshState()
-
-            PullToRefreshBox(
-                state = pullToRefreshState,
-                isRefreshing = state.isLoading,
-                onRefresh = { vm.refresh(force = true) },
-                modifier = Modifier.fillMaxSize()
+                    .fillMaxSize()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                CatsGrid(
-                    state,
-                    onOpenDetails = onOpenDetails
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun CatsGrid(
-    state: CatsUiState,
-    onOpenDetails: (imageId: String) -> Unit
-) {
-    Log.i("MeowMate", "CatsGrid called. items=${state.items.size}, loading=${state.isLoading}")
-    Column {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 140.dp),
-            contentPadding = PaddingValues(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(state.items, key = { it.imageId }) { cat ->
-                CatItemCard(
-                    imageUrl = cat.imageUrl,
-                    name = cat.breed?.name,
-                    onClick = { onOpenDetails(cat.imageId) },
+                CatSearchBar(
+                    query = query,
+                    onQueryChange = vm::onQueryChange,
                     modifier = Modifier.fillMaxWidth()
                 )
+
+                when (ui) {
+                    is CatsUiState.Success -> {
+                        CatsGrid(
+                            items = (ui as CatsUiState.Success).items,
+                            onClick = { id -> if (id.isNotBlank()) onOpenDetails(id) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    CatsUiState.Empty -> {
+                        EmptyState(
+                            message = stringResource(R.string.no_results),
+                            onRetry = { vm.refresh() }
+                        )
+                    }
+                    is CatsUiState.Error -> {
+                        val err = ui as CatsUiState.Error
+                        if (err.cached.isNotEmpty()) {
+                            ErrorBanner(err.message)
+                            Spacer(Modifier.height(8.dp))
+                            CatsGrid(
+                                items = err.cached,
+                                onClick = onOpenDetails,
+                                modifier = Modifier.weight(1f)
+                            )
+                        } else {
+                            ErrorState(message = err.message, onRetry = { vm.refresh() })
+                        }
+                    }
+                    CatsUiState.Loading -> LoadingGridPlaceholder()
+                }
             }
         }
     }
 }
 
-@Composable
-private fun EmptyState(onRetry: () -> Unit) {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(stringResource(R.string.empty_title))
-            Spacer(Modifier.height(8.dp))
-            Button(onClick = onRetry) { Text(stringResource(R.string.retry)) }
-        }
-    }
-}
-
-@Composable
-private fun ErrorState(message: String, onRetry: () -> Unit) {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(stringResource(R.string.error_prefix, message))
-            Spacer(Modifier.height(8.dp))
-            Button(onClick = onRetry) { Text(stringResource(R.string.retry)) }
-        }
-    }
-}

@@ -89,7 +89,7 @@ object AppModule {
         api: TheCatApi,
         db: CatsDb,
         apiKey: () -> String?
-    ): CatsRepository = CatsRepositoryImpl(api, db.dao(), apiKey)
+    ): CatsRepository = CatsRepositoryImpl(api, db.dao(), db,apiKey)
 
     @Provides
     @Singleton

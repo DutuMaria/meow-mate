@@ -4,8 +4,8 @@ package com.example.meowmate.data.local
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cat_images")
-data class CatImageEntity(
+@Entity(tableName = "cats")
+data class CatEntity(
     @PrimaryKey val id: String,
     val url: String,
     val breedId: String?,
@@ -19,6 +19,7 @@ data class CatImageEntity(
     val socialNeeds: Int?,
     val wikipediaUrl: String?,
     val vetstreetUrl: String?,
-    val description: String?
+    val description: String?,
+    val savedAt: Long = System.currentTimeMillis()
 )
 

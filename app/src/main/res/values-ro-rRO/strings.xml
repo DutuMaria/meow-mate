@@ -30,6 +30,9 @@
     <string name="empty_title">Nicio pisică disponibilă.</string>
     <string name="empty_list">Nu am găsit pisici.</string>
     <string name="offline_fallback">Ești offline. Afișăm datele din cache.</string>
+    <string name="refresh">Reîmprospătează</string>
+    <string name="no_results">Niciun rezultat</string>
+    <string name="network_error">Eroare de rețea</string>
 
     <!-- Settings -->
     <string name="settings">Setări</string>

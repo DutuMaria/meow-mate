@@ -1,51 +1,50 @@
 package com.example.meowmate.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.meowmate.domain.repository.CatsRepository
 import com.example.meowmate.domain.usecase.GetCatsUseCase
 import com.example.meowmate.ui.state.CatsUiState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
 class CatsViewModel @Inject constructor(
-    private val getCats: GetCatsUseCase
+    private val getCats: GetCatsUseCase,
+    private val repo: CatsRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(CatsUiState(isLoading = true))
-    val state: StateFlow<CatsUiState> = _state.asStateFlow()
+    private val _ui = MutableStateFlow<CatsUiState>(CatsUiState.Loading)
+    val ui: StateFlow<CatsUiState> = _ui
 
-    init {
-        refresh(force = false)
+    private val _query = MutableStateFlow("")
+    val query: StateFlow<String> = _query
+
+    init { refresh() }
+
+    fun onQueryChange(newQ: String) {
+        _query.value = newQ
+        refresh(newQ)
     }
 
-    fun refresh(force: Boolean) {
+    fun refresh(q: String = _query.value) {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true, error = null)
-            getCats(force, query = _state.value.query)
-                .catch { e ->
-                    _state.value = _state.value.copy(isLoading = false, error = e.message)
+            val cache = repo.cachedCats(q)
+            if (cache.isNotEmpty()) _ui.value = CatsUiState.Success(cache)
+            else _ui.value = CatsUiState.Loading
+
+            runCatching { getCats(q) }
+                .onSuccess { fresh ->
+                    _ui.value = if (fresh.isEmpty()) CatsUiState.Empty
+                    else CatsUiState.Success(fresh)
                 }
-                .collectLatest { result ->
-                    Log.i("MeowMate", "Cats fetched: $result")
-                    _state.value = _state.value.copy(
-                        isLoading = false,
-                        items = result.getOrElse { emptyList() },
-                        error = result.exceptionOrNull()?.message
-                    )
+                .onFailure { e ->
+                    if (cache.isEmpty())
+                        _ui.value = CatsUiState.Error(e.message ?: "Network error", emptyList())
+                    else
+                        _ui.value = CatsUiState.Error(e.message ?: "Network error", cache)
                 }
         }
-    }
-
-    fun updateQuery(q: String) {
-        _state.value = _state.value.copy(query = q)
-        refresh(force = false)
     }
 }

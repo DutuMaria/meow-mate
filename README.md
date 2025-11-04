@@ -68,6 +68,7 @@ It features search and filtering, pull-to-refresh, detailed breed information (i
 - 🚧 **Error handling** for network and API issues  
 
 ## Future updates
+- Verify star rating functionality 
 - Fix images
 - Add logging system
-- Loading animation
+- Add loading animation

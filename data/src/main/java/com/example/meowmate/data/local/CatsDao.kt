@@ -5,15 +5,26 @@ import androidx.room.*
 
 @Dao
 interface CatsDao {
-    @Query("SELECT * FROM cat_images ORDER BY name ASC")
-    suspend fun getAll(): List<CatImageEntity>
-
-    @Query("SELECT * FROM cat_images WHERE id = :id LIMIT 1")
-    suspend fun getById(id: String): CatImageEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsertAll(items: List<CatImageEntity>)
+    suspend fun insertAll(items: List<CatEntity>)
 
-    @Query("DELETE FROM cat_images")
-    suspend fun clear()
+    @Query("SELECT * FROM cats ORDER BY savedAt DESC")
+    suspend fun getAll(): List<CatEntity>
+
+    @Query("""
+        SELECT * FROM cats
+        WHERE name       LIKE '%' || :q || '%' COLLATE NOCASE
+           OR origin     LIKE '%' || :q || '%' COLLATE NOCASE
+           OR temperament LIKE '%' || :q || '%' COLLATE NOCASE
+        ORDER BY savedAt DESC
+    """)
+    suspend fun search(q: String): List<CatEntity>
+
+    @Query("SELECT * FROM cats WHERE id = :id LIMIT 1")
+    suspend fun getById(id: String): CatEntity?
+
+
+    @Query("DELETE FROM cats")
+    suspend fun clearAll()
 }
